@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:sharding="http://shardingsphere.apache.org/schema/shardingsphere/sharding"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://shardingsphere.apache.org/schema/shardingsphere/sharding
+                        http://shardingsphere.apache.org/schema/shardingsphere/sharding/sharding.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:annotation-config />
+    
+    <bean id="dataSource_0" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/demo_ds_0?useUnicode=true&amp;characterEncoding=utf8" />
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+    </bean>
+    
+    <bean id="dataSource_1" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/demo_ds_1?useUnicode=true&amp;characterEncoding=utf8" />
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+    </bean>
+    
+    <sharding:data-source id="shardingDataSource">
+        <sharding:sharding-rule data-source-names="dataSource_0,dataSource_1">
+            <sharding:table-rules>
+<!--                <sharding:table-rule logic-table="t_payment_order" actual-data-nodes="demo_ds_$->{0..1}.t_payment_order_$->{['01','02','03','04','05','06','07','08','09','10','11','12']}" database-strategy-ref="databaseStandardStrategy" table-strategy-ref="tableStandardStrategy"/>-->
+                <sharding:table-rule logic-table="t_payment_order" actual-data-nodes="dataSource_$->{0..1}.t_payment_order_$->{['01','02','03','04','05','06','07','08','09','10','11','12']}" database-strategy-ref="databaseStandardStrategy" table-strategy-ref="tableStandardStrategy"/>
+            </sharding:table-rules>
+        </sharding:sharding-rule>
+        <sharding:props>
+            <prop key="sql.show">true</prop>
+        </sharding:props>
+    </sharding:data-source>
+    
+    <sharding:standard-strategy id="databaseStandardStrategy" sharding-column="user_id" precise-algorithm-ref="preciseModuloDatabaseShardingAlgorithm" />
+    <sharding:standard-strategy id="tableStandardStrategy" sharding-column="order_id" precise-algorithm-ref="preciseModuloTableShardingAlgorithm" />
+    
+    <bean id="preciseModuloDatabaseShardingAlgorithm" class="komachi.sion.algorithm.PreciseModuloDatabaseShardingAlgorithm" />
+    <bean id="preciseModuloTableShardingAlgorithm" class="komachi.sion.algorithm.PreciseModuloTableShardingAlgorithm" />
+</beans>
