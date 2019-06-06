@@ -3,7 +3,7 @@
 <mapper namespace="komachi.sion.repo.OrderMapper">
     <resultMap id="baseResultMap" type="komachi.sion.entity.Order">
         <result column="order_id" property="orderId" jdbcType="BIGINT"/>
-        <result column="recepit" property="recepit" jdbcType="VARCHAR"/>
+        <result column="recepit" property="recepit" jdbcType="LONGVARCHAR"/>
     </resultMap>
     
     <update id="createTable">
@@ -19,6 +19,6 @@
     </update>
     
     <insert id="insert" useGeneratedKeys="true" keyProperty="orderId">
-        INSERT INTO me_order (recepit) VALUES (#{recepit,jdbcType=VARCHAR});
+        INSERT INTO me_order (recepit) VALUES (#{recepit,jdbcType=LONGVARCHAR});
     </insert>
 </mapper>
