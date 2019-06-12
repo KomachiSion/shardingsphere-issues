@@ -13,6 +13,7 @@
         <module>issue2417</module>
         <module>issue2468</module>
         <module>issue2515</module>
+        <module>issue2527</module>
     </modules>
     
     <properties>
