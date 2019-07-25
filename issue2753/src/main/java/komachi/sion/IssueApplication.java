@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * Plan to fix in 4.0.0-RC3
+ * Fixed in 4.0.0-RC2
  *
  * @author yangyi
  */
@@ -25,7 +25,7 @@ public class IssueApplication {
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS user_integral_details";
     
     private static final String CREATE_TABLE = "CREATE TABLE user_integral_details("
-        + "`id` INT NOT NULL PRIMARY KEY, "
+        + "`id` BIGINT NOT NULL PRIMARY KEY, "
         + "`user_id` INT NOT NULL, "
         + "`type` INT, "
         + "`reason` VARCHAR(50), "
@@ -107,7 +107,7 @@ public class IssueApplication {
         StringBuilder lables = new StringBuilder("| ");
         while (resultSet.next()) {
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                lables.append(resultSet.getString(i)).append(" | ");
+                lables.append(resultSet.getObject(i)).append(" | ");
             }
             lables.append("\n");
         }
