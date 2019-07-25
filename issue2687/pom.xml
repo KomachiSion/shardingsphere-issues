@@ -8,7 +8,8 @@
         <artifactId>shardingsphere-issues</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>issue#2687</artifactId>
+    <artifactId>issue2687</artifactId>
+    <name>issue#2687</name>
     
     <dependencies>
         <dependency>

@@ -9,7 +9,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>issue#2613</artifactId>
+    <name>issue#2613</name>
+    <artifactId>issue2613</artifactId>
 
     <dependencies>
         <dependency>

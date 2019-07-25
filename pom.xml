@@ -18,6 +18,7 @@
         <module>issue2613</module>
         <module>issue2662</module>
         <module>issue2687</module>
+        <module>issue2753</module>
     </modules>
     
     <properties>

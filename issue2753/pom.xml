@@ -9,19 +9,19 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     
-    <name>issue#2662</name>
-    <artifactId>issue2662</artifactId>
-
+    <artifactId>issue2753</artifactId>
+    <name>issue#2753</name>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
             <version>4.0.0-RC1</version>
         </dependency>
-    
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
             <version>2.0.1.RELEASE</version>
         </dependency>
     </dependencies>

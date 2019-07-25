@@ -1,10 +1,12 @@
 package komachi.sion;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import javax.sql.DataSource;
 
@@ -13,28 +15,27 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * fixed in 4.0.0-RC3,
- * Reason analyze see https://github.com/apache/incubator-shardingsphere/issues/2687
+ * Plan to fix in 4.0.0-RC3
  *
  * @author yangyi
  */
 @SpringBootApplication
 public class IssueApplication {
     
-    private static final String DROP_TABLE = "DROP TABLE IF EXISTS t";
+    private static final String DROP_TABLE = "DROP TABLE IF EXISTS user_integral_details";
     
-//    MySQL
-//    private static final String CREATE_TABLE = "CREATE TABLE t(`id` INT NOT NULL PRIMARY KEY, `code` VARCHAR(40) NOT NULL) COLLATE='utf8mb4_unicode_ci'";
-//    private static final String CREATE_TABLE = "CREATE TABLE t(`id` INT NOT NULL PRIMARY KEY, `code` VARCHAR(40) NOT NULL) COLLATE='utf8mb4_bin'";
-
-//    PostgreSQL
-    private static final String CREATE_TABLE = "CREATE TABLE t(id INT NOT NULL PRIMARY KEY, code VARCHAR(40) NOT NULL)";
+    private static final String CREATE_TABLE = "CREATE TABLE user_integral_details("
+        + "`id` INT NOT NULL PRIMARY KEY, "
+        + "`user_id` INT NOT NULL, "
+        + "`type` INT, "
+        + "`reason` VARCHAR(50), "
+        + "`create_date` DATETIME default current_timestamp, "
+        + "`modify_date` DATETIME default current_timestamp on update current_timestamp "
+        + ")";
     
-    private static final String INSERT_DATA = "INSERT INTO t (id, code) VALUES (%d, '%s')";
+    private static final String INSERT_DATA = "INSERT INTO user_integral_details (create_date, modify_date, reason, type, user_id) VALUES (?, ?, ?, ?, ?)";
     
-    private static final String QUERY_DATA = "select code from t group by code order by code";
-    
-    private static final String QUERY_DATA_2 = "select max(code) from t group by upper(code)";
+    private static final String QUERY_DATA = "select * from user_integral_details";
     
     public static void main(String[] args) {
         try (ConfigurableApplicationContext applicationContext = SpringApplication.run(IssueApplication.class, args)) {
@@ -46,6 +47,7 @@ public class IssueApplication {
         DataSource dataSource = applicationContext.getBean(DataSource.class);
         try (Connection connection = dataSource.getConnection()) {
             initEnvironment(connection);
+            insertData(connection);
             query(connection);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,23 +58,18 @@ public class IssueApplication {
         Statement statement = connection.createStatement();
         statement.execute(DROP_TABLE);
         statement.execute(CREATE_TABLE);
-        statement.execute(String.format(INSERT_DATA, 11, "11035801128253"));
-        statement.execute(String.format(INSERT_DATA, 13, "110358011282f5"));
-        statement.execute(String.format(INSERT_DATA, 15, "110358011282G1"));
-        statement.execute(String.format(INSERT_DATA, 17, "110358011282H5"));
-        statement.execute(String.format(INSERT_DATA, 19, "110358011282T4"));
-        statement.execute(String.format(INSERT_DATA, 21, "110358011282U5"));
-        statement.execute(String.format(INSERT_DATA, 23, "110358011282z1"));
-        statement.execute(String.format(INSERT_DATA, 22, "110358011282D4"));
-        statement.execute(String.format(INSERT_DATA, 24, "110358011282E9"));
-        statement.execute(String.format(INSERT_DATA, 26, "110358011282h8"));
-        statement.execute(String.format(INSERT_DATA, 28, "110358011282I0"));
-        statement.execute(String.format(INSERT_DATA, 30, "110358011282l1"));
-        statement.execute(String.format(INSERT_DATA, 32, "110358011282O7"));
-        statement.execute(String.format(INSERT_DATA, 34, "110358011282P0"));
-        statement.execute(String.format(INSERT_DATA, 36, "110358011282T4"));
-        statement.execute(String.format(INSERT_DATA, 38, "110358011282w6"));
         statement.close();
+    }
+    
+    private static void insertData(Connection connection) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_DATA)) {
+            statement.setObject(1, new Date());
+            statement.setObject(2, null);
+            statement.setObject(3, "test");
+            statement.setObject(4, 1);
+            statement.setObject(5, 22136);
+            statement.executeUpdate();
+        }
     }
     
     private static void query(Connection connection) throws SQLException {

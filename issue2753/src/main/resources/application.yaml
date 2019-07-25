@@ -1,0 +1,26 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: ds
+      ds:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/demo_ds?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+        username: root
+        password:
+
+    sharding:
+      tables:
+        user_integral_details:
+          actual-data-nodes: ds.user_integral_details_$->{0..2}
+          table-strategy:
+            inline:
+              sharding-column: user_id
+              algorithm-expression: user_integral_details_$->{user_id % 3}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+
+    props:
+      sql:
+        show: true
