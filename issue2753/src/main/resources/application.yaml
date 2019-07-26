@@ -10,17 +10,19 @@ spring:
         password:
 
     sharding:
+      default-data-source-name: ds
       tables:
-        user_integral_details:
-          actual-data-nodes: ds.user_integral_details_$->{0..2}
+        user_task_record:
+          actual-data-nodes: ds.user_task_record_$->{0..2}
           table-strategy:
             inline:
               sharding-column: user_id
-              algorithm-expression: user_integral_details_$->{user_id % 3}
+              algorithm-expression: user_task_record_$->{user_id % 3}
           key-generator:
             column: id
             type: SNOWFLAKE
-
+            props:
+              worker.id: 1
+              max.tolerate.time.difference.milliseconds: 100
     props:
-      sql:
-        show: true
+      sql.show: true

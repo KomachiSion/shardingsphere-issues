@@ -16,26 +16,20 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * Fixed in 4.0.0-RC2
+ * refer to #2770
  *
  * @author yangyi
  */
 @SpringBootApplication
 public class IssueApplication {
     
-    private static final String DROP_TABLE = "DROP TABLE IF EXISTS user_integral_details";
+    private static final String DROP_TABLE = "DROP TABLE IF EXISTS user_task_record";
     
-    private static final String CREATE_TABLE = "CREATE TABLE user_integral_details("
-        + "`id` BIGINT NOT NULL PRIMARY KEY, "
-        + "`user_id` INT NOT NULL, "
-        + "`type` INT, "
-        + "`reason` VARCHAR(50), "
-        + "`create_date` DATETIME default current_timestamp, "
-        + "`modify_date` DATETIME default current_timestamp on update current_timestamp "
-        + ")";
+    private static final String CREATE_TABLE = "CREATE TABLE user_task_record(id bigint(20) NOT NULL AUTO_INCREMENT,create_date datetime NOT NULL,modify_date datetime DEFAULT NULL,order_list bigint(20) DEFAULT NULL,clazz_id bigint(20) DEFAULT NULL,course_id bigint(20) DEFAULT NULL,date date DEFAULT NULL,organization_id bigint(20) DEFAULT NULL,project_id bigint(20) DEFAULT NULL,rewards float NOT NULL,task_id bigint(20) NOT NULL,task_name varchar(255) DEFAULT NULL,user_id bigint(20) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4";
     
-    private static final String INSERT_DATA = "INSERT INTO user_integral_details (create_date, modify_date, reason, type, user_id) VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_DATA = "insert into user_task_record (create_date, modify_date, order_list, clazz_id, course_id, date, organization_id, project_id, rewards, task_id, task_name, user_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
-    private static final String QUERY_DATA = "select * from user_integral_details";
+    private static final String QUERY_DATA = "select * from user_task_record";
     
     public static void main(String[] args) {
         try (ConfigurableApplicationContext applicationContext = SpringApplication.run(IssueApplication.class, args)) {
@@ -65,9 +59,16 @@ public class IssueApplication {
         try (PreparedStatement statement = connection.prepareStatement(INSERT_DATA)) {
             statement.setObject(1, new Date());
             statement.setObject(2, null);
-            statement.setObject(3, "test");
-            statement.setObject(4, 1);
-            statement.setObject(5, 22136);
+            statement.setObject(3, 1564113456471L);
+            statement.setObject(4, null);
+            statement.setObject(5, null);
+            statement.setObject(6, new Date());
+            statement.setObject(7, 120);
+            statement.setObject(8, 589);
+            statement.setObject(9, 3.0);
+            statement.setObject(10, 345673456L);
+            statement.setObject(11, "发帖");
+            statement.setObject(12, 33);
             statement.executeUpdate();
         }
     }
