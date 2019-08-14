@@ -1,0 +1,44 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: ds
+      ds:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/demo_ds?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+        username: root
+        password:
+
+    sharding:
+      default-data-source-name: ds
+      tables:
+        party:
+          actual-data-nodes: ds.party_$->{0..1}
+          table-strategy:
+            inline:
+              sharding-column: party_id
+              algorithm-expression: party_$->{party_id % 2}
+          key-generator:
+            column: party_id
+            type: SNOWFLAKE
+            props:
+              worker.id: 1
+              max.tolerate.time.difference.milliseconds: 100
+        user_auth:
+          key-generator:
+            column: user_auth_id
+            type: snowflake
+    encrypt:
+      tables:
+        columns:
+          encryptor: example_encrypt
+          cipherColumn: credential
+          assistedQueryColumn: credential
+      encryptors:
+        example_encrypt:
+          type: aes
+          props:
+            'aes.key.value': 123456
+
+    props:
+      sql.show: true

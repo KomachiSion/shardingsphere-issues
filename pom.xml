@@ -19,6 +19,8 @@
         <module>issue2662</module>
         <module>issue2687</module>
         <module>issue2753</module>
+        <module>issue2866</module>
+        <module>issue2865</module>
     </modules>
     
     <properties>
