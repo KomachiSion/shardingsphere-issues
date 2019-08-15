@@ -24,21 +24,19 @@ spring:
             props:
               worker.id: 1
               max.tolerate.time.difference.milliseconds: 100
-        user_auth:
-          key-generator:
-            column: user_auth_id
-            type: snowflake
-    encrypt:
-      tables:
-        columns:
-          encryptor: example_encrypt
-          cipherColumn: credential
-          assistedQueryColumn: credential
-      encryptors:
-        example_encrypt:
-          type: aes
-          props:
-            'aes.key.value': 123456
+      encrypt-rule:
+        tables:
+          user_auth:
+            columns:
+              credential:
+                encryptor: example_encrypt
+                cipherColumn: credential
+                assistedQueryColumn: credential
+        encryptors:
+          example_encrypt:
+            type: aes
+            props:
+              'aes.key.value': 123456
 
     props:
       sql.show: true
