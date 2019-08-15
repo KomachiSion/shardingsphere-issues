@@ -30,7 +30,7 @@ public class IssueApplication {
         try (Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
             PreparedStatement preparedStatement = connection.prepareStatement("insert into party (party_nickname, party_nickname_spelling, sex, birthday) values (?, ?, ?, ?)")) {
-            statement.execute("CREATE TABLE IF NOT EXISTS party (party_id int primary key, party_nickname varchar(50), party_nickname_spelling varchar(50), sex int, birthday date)");
+            statement.execute("CREATE TABLE IF NOT EXISTS party (party_id bigint primary key, party_nickname varchar(50), party_nickname_spelling varchar(50), sex int, birthday date)");
             preparedStatement.setObject(1, "test");
             preparedStatement.setObject(2, "test");
             preparedStatement.setObject(3, 1);
