@@ -1,0 +1,31 @@
+dataSources:
+  ds_0: !!com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo_ds_0
+    username: root
+    password:
+  ds_1: !!com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo_ds_1
+    username: root
+    password:
+
+shardingRule:
+  defaultDatabaseStrategy:
+    inline:
+      shardingColumn: id
+      algorithmExpression: ds_${new BigDecimal(id).abs().divideAndRemainder(4)[1].longValue().intdiv(2)}
+  tables:
+    ts_order:
+      actualDataNodes: ds_0.ts_order_0000,ds_0.ts_order_0001,ds_1.ts_order_0002,ds_1.ts_order_0003
+#      databaseStrategy:
+#        inline:
+#          shardingColumn: id
+#          algorithmExpression: ds_${new BigDecimal(id).abs().divideAndRemainder(4)[1].longValue().intdiv(2)}
+      tableStrategy:
+        inline:
+          shardingColumn: id
+          algorithmExpression: ts_order_${String.format("%04d",new BigDecimal(id).abs().divideAndRemainder(4)[1].longValue())}
+
+props:
+  sql.show: true
