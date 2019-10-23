@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="komachi.sion.sharding.mapper.DataRecordMapper">
+    <resultMap id="dataMap" type="komachi.sion.sharding.DataRecord">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="byteData" property="byteData" jdbcType="BLOB"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >id, byteData, `type`</sql>
+    
+    <select id="selectByPrimaryKey" resultMap="dataMap">
+        select <include refid="Base_Column_List" /> from data_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+    <update id="update" parameterType="komachi.sion.sharding.DataRecord">
+        update data_record set
+        byteData = #{byteData,jdbcType=LONGVARBINARY},
+        type = #{type,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="insert" parameterType="komachi.sion.sharding.DataRecord">
+        insert into data_record(<include refid="Base_Column_List" />) values (#{id,jdbcType=BIGINT},#{byteData,jdbcType=LONGVARBINARY},#{type,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="delete">
+        delete from data_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+</mapper>
