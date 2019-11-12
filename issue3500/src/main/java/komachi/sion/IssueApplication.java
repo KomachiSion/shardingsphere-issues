@@ -21,7 +21,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import lombok.SneakyThrows;
 
 /**
- *
+ * In router, for subQuery will check the sharding column status.
+ * But the check will cast to the {@link org.apache.shardingsphere.core.strategy.route.value.ListRouteValue},
+ * If the sharding value is range, the problem will happen.
  *
  * @author yangyi
  */
@@ -59,7 +61,7 @@ public class IssueApplication {
     }
     
     private static void selectDatas(Connection connection) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, executeTime FROM t_check_task WHERE executeTime between ? and ?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select count(1) from (SELECT id, executeTime FROM t_check_task WHERE executeTime between ? and ?)")) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             calendar.add(Calendar.MONTH, -1);
