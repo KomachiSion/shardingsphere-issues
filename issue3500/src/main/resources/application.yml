@@ -1,0 +1,55 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  shardingsphere:
+    datasource:
+      names: master
+      master:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: ""
+        jdbcUrl: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+    sharding:
+      tables:
+        t_check_task:
+          actual-data-nodes: master.t_check_task_$->{2017..2020}$->{['01','02','03','04','05','06','07','08','09','10','11','12']}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          table-strategy:
+            standard:
+              sharding-column: executeTime
+              rangeAlgorithmClassName: komachi.sion.shard.Range
+              precise-algorithm-class-name: komachi.sion.shard.Precise
+        t_base_defect_log:
+          actual-data-nodes: master.t_base_defect_log_$->{2017..2020}$->{['01','02','03','04','05','06','07','08','09','10','11','12']}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          table-strategy:
+            inline:
+              sharding-column: createdTime
+              algorithm-expression: t_base_defect_log_$->{ if(createdTime!=null){ return createdTime.format("yyyyMM")}}
+        t_base_defect_operate:
+          actual-data-nodes: master.t_base_defect_operate_$->{2017..2020}$->{['01','02','03','04','05','06','07','08','09','10','11','12']}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          table-strategy:
+            inline:
+              sharding-column: createdTime
+              algorithm-expression: t_base_defect_operate_$->{ if(createdTime!=null){ return createdTime.format("yyyyMM")}}
+        t_base_defect:
+          actual-data-nodes: master.t_base_defect_$->{2017..2020}$->{['01','02','03','04','05','06','07','08','09','10','11','12']}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          table-strategy:
+            inline:
+              sharding-column: createdTime
+              algorithm-expression: t_base_defect_$->{ if(createdTime!=null){ return createdTime.format("yyyyMM")}}
+    props:
+      sql:
+        show: true
+
