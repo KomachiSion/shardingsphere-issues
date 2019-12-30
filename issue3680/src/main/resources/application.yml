@@ -25,10 +25,10 @@ spring:
             inline:
               sharding-column: user_id
               algorithm-expression: ds$->{user_id % 2}
-#          table-strategy:
-#            inline:
-#              sharding-column: order_id
-#              algorithm-expression: t_order_$->{order_id % 2}
+          table-strategy:
+            inline:
+              sharding-column: order_id
+              algorithm-expression: t_order_$->{order_id % 2}
     props:
       sql:
         show: true
