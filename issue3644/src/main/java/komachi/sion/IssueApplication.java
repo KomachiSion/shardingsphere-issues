@@ -16,9 +16,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import lombok.SneakyThrows;
 
 /**
- * In router, for subQuery will check the sharding column status.
- * But the check will cast to the {@link org.apache.shardingsphere.core.strategy.route.value.ListRouteValue},
- * If the sharding value is range, the problem will happen.
+ * Won't fix, sharding column should not be null.
  *
  * @author yangyi
  */
@@ -47,19 +45,19 @@ public class IssueApplication {
     }
     
     private static void insertData(Connection connection) {
-//        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO `t_order` (order_id, user_id, status) VALUES (?, ?, ?)")) {
-//            preparedStatement.setObject(1, null);
-//            preparedStatement.setObject(2, null);
-//            preparedStatement.setObject(3, "xxxx");
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-        try (Statement preparedStatement = connection.createStatement()) {
-            preparedStatement.executeUpdate("INSERT INTO `t_order` (order_id, user_id, status) VALUES (100, null, 'xxx')");
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO `t_order` (order_id, user_id, status) VALUES (?, ?, ?)")) {
+            preparedStatement.setObject(1, null);
+            preparedStatement.setObject(2, null);
+            preparedStatement.setObject(3, "xxxx");
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+//        try (Statement preparedStatement = connection.createStatement()) {
+//            preparedStatement.executeUpdate("INSERT INTO `t_order` (order_id, user_id, status) VALUES (100, null, 'xxx')");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
     
     private static void selectDatas(Connection connection) {
