@@ -30,6 +30,7 @@
         <module>issue3680</module>
         <module>issue3831</module>
         <module>issue3644</module>
+        <module>issue3869</module>
     </modules>
     
     <properties>

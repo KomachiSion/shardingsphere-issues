@@ -1,0 +1,22 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: ds0
+      ds0:
+        type: org.apache.commons.dbcp2.BasicDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/test?useUnicode=true
+        username: root
+        password:
+    sharding:
+      tables:
+        tunnel_order:
+          actualDataNodes: ds0.tunnel_order$->{2019..2020}$->{1..4}
+          tableStrategy:
+            standard:
+              shardingColumn: create_date
+              preciseAlgorithmClassName: komachi.sion.algotirhm.OrderTableShardingAlgorithm
+              rangeAlgorithmClassName: komachi.sion.algotirhm.OrderTableShardingAlgorithm
+    props:
+      sql:
+        show: true
