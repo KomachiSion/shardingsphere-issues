@@ -1,0 +1,28 @@
+spring:
+  shardingsphere:
+    props:
+      sql:
+        show: true
+    sharding:
+      default-database-strategy:
+        hint:
+          algorithm-class-name: komachi.sion.algotirhm.OrderShardingAlgorithm
+      tables:
+        t_order:
+          actualDataNodes: dsa.t_order,dsb.t_order
+    datasource:
+      names: dsa,dsb
+      dsa:
+        pool-name: dsa
+        type: com.zaxxer.hikari.HikariDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/demo_ds_0?useUnicode=true
+        username: root
+        password: ''
+      dsb:
+        pool-name: dsb
+        type: com.zaxxer.hikari.HikariDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/demo_ds_1?useUnicode=true
+        username: root
+        password: ''
