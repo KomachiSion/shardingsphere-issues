@@ -3,13 +3,13 @@ spring:
     props:
       sql:
         show: true
-    sharding:
-      default-database-strategy:
-        hint:
-          algorithm-class-name: komachi.sion.algotirhm.OrderShardingAlgorithm
-      tables:
-        t_order:
-          actualDataNodes: dsa.t_order,dsb.t_order
+#    sharding:
+#      default-database-strategy:
+#        hint:
+#          algorithm-class-name: komachi.sion.algotirhm.OrderShardingAlgorithm
+#      tables:
+#        t_order:
+#          actualDataNodes: dsa.t_order,dsb.t_order
     datasource:
       names: dsa,dsb
       dsa:
